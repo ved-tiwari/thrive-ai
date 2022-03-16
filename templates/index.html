@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="icons/icon.png">
+    <link rel="apple-touch-icon" href="touch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="touch-icon-ipad-retina.png">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Fitness Tools">
+
+	<title>Thrive AI</title>
+
+	<!--Ionic-->
+	<script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+	<script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+	<script type="module">
+		import { modalController } from 'https://cdn.jsdelivr.net/npm/@ionic/core@latest/dist/ionic/index.esm.js';
+		window.modalController = modalController;
+
+		import { toastController } from 'https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/index.esm.js';
+		window.toastController = toastController;
+
+		import { alertController } from 'https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/index.esm.js';
+      	window.alertController = alertController;
+	</script>
+
+	
+
+	<!--Chart JS-->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+	<link rel="stylesheet" href="{{url_for('static', filename='dark.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+
+	<style>
+		:root {
+			--ion-safe-area-top: 20px;
+			--ion-safe-area-bottom: 22px;
+		}
+	</style>
+
+</head>
+
+<body>
+
+	<body>
+		<ion-app>
+
+			<ion-tabs>
+
+				<ion-tab tab="discover">
+					<div class="AllContent">
+						<div class="header">
+							<br><br>
+							<ion-title class="hello">
+								<ion-icon name="analytics-outline" style="color: #32d74b; left: 30px">
+								</ion-icon>
+								Thrive AI<br>
+							</ion-title>
+							<br><br>
+
+							<ion-title style="color: #646565; font-size: 20px; top: -10px;" id="date">
+								Date<br>
+							</ion-title>
+
+							<div class="line"></div>
+							<div class="break" style="height: 30px"></div>
+
+
+						</div>
+
+						<div class="chart">
+							<ion-label style="color: #646565; font-size: 22px; top: 7px; left: 4px; font-weight: bold;">
+								Poverty rates in <span id="stateName">
+									<ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+								</span>
+							</ion-label>
+							<div style="height:5px"></div>
+							<canvas id="charts"></canvas>
+							<br>
+							<div class="news">
+								<div class="breaks"></div>
+								<ion-label style="color: #646565; font-size: 22px; font-weight: bold;">
+									Recent Searches
+									<ion-label id="clear">
+										Clear
+									</ion-label>
+								</ion-label>
+
+								<ion-card style="margin-top: 10px; margin-left: 0px; margin-right: 0px;">
+									<ion-list id="recentList" style="max-height: 250px; overflow-y: auto;">
+
+										<ion-item id="default">
+											<ion-label>
+												<h2 id="defaultState">
+													<ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+												</h2>
+												<h5>Current Poverty Rate: <span id="currLocationPov" style="color: #32d74b;" style="position: absolute; width: 20%; left: 140px; top: 32px;"><ion-skeleton-text animated style="width: 20%"></ion-skeleton-text></span></h5>
+												<ion-icon name="navigate-outline"
+													style="position: absolute; left: 90%; top: 37%;"></ion-icon>
+											</ion-label>
+										</ion-item>
+										<div id="newItems">
+
+										</div>
+									</ion-list>
+								</ion-card>
+
+								<div class="breaks"></div>
+								<ion-label style="color: #646565; font-size: 22px; font-weight: bold;">
+									News Briefing
+
+								</ion-label>
+
+								<ion-icon name="ion-items-outline"></ion-icon>
+
+
+								<div
+									style="overflow: auto; white-space: nowrap; margin-left: -17px; margin-right: -15px; margin-top: -18px">
+									<ion-card class="card" id="card0">
+										<img src="" class="img" id="im0">
+										<div class="newsblur">
+											<ion-label class="newsTitle" id="t0">
+
+											</ion-label>
+										</div>
+									</ion-card>
+									<ion-card class="card" style="margin-left: 0px !important" id="card1">
+										<img class="img" id="im1">
+										<div class="newsblur" onclick="news1()"></div>
+										<ion-label class="newsTitle" id="t1">
+
+										</ion-label>
+
+									</ion-card>
+									<ion-card class="card" style="margin-left: 0px !important" id="card2">
+										<img class="img" id="im2">
+										<div class="newsblur" onclick="news1()"></div>
+										<ion-label class="newsTitle" id="t2">
+
+										</ion-label>
+
+									</ion-card>
+									<ion-card class="card" style="margin-left: 0px !important" id="card3">
+										<img class="img" id="im3">
+										<div class="newsblur" onclick="news1()"></div>
+										<ion-label class="newsTitle" id="t3">
+
+										</ion-label>
+
+									</ion-card>
+									<ion-card class="card" style="margin-left: 0px !important" id="card4">
+										<img class="img" id="im4">
+										<div class="newsblur" onclick="news1()"></div>
+										<ion-label class="newsTitle" id="t4">
+
+										</ion-label>
+
+									</ion-card>
+									<ion-card class="card" style="margin-left: 0px !important" id="card5">
+										<img class="img" id="im5">
+										<div class="newsblur" onclick="news1()"></div>
+										<ion-label class="newsTitle" id="t5">
+
+										</ion-label>
+
+									</ion-card>
+									<ion-card class="card" style="margin-left: 0px !important" id="card6">
+										<img class="img" id="im6">
+										<div class="newsblur" onclick="news1()"></div>
+										<ion-label class="newsTitle" id="t6">
+
+										</ion-label>
+
+									</ion-card>
+									<ion-card class="card" style="margin-left: 0px !important" id="card7">
+										<img class="img" id="im7">
+										<div class="newsblur" onclick="news1()"></div>
+										<ion-label class="newsTitle" id="t7">
+
+										</ion-label>
+
+									</ion-card>
+									<ion-card class="card" style="margin-left: 0px !important" id="card8">
+										<img class="img" id="im8">
+										<div class="newsblur" onclick="news1()"></div>
+										<ion-label class="newsTitle" id="t8">
+
+										</ion-label>
+
+									</ion-card>
+								</div>
+								<br>
+							</div>
+
+
+						</div>
+					</div>
+
+
+				</ion-tab>
+
+				<ion-tab tab="watchlist">
+
+					<ion-toolbar>
+						<ion-title>Additional Information</ion-title>
+					</ion-toolbar>
+
+					<div style="position: absolute; top: 40px;">
+
+						<a href="https://www.globalcitizen.org/en/campaign/defeat-poverty/"
+							style="text-decoration: none;" id="donate1">
+							<ion-card id="contributeCard">
+								<img src="https://media.globalcitizen.org/thumbnails/13/00/13004612-2e8d-4787-971c-21bfd2963b7a/bbh-singapore-d2hs0grfcpq-unsplash.jpg__1600x900_q85_crop_subsampling-2.jpg"
+									id="charityImage" style="height: 215px;" />
+								<ion-card-header>
+									<ion-card-subtitle style="color: #32d74b;" id="contribute">Contribute
+									</ion-card-subtitle>
+									<ion-card-title id="charityTitle">Defeat Poverty</ion-card-title>
+								</ion-card-header>
+								<ion-card-content id="charityDescription">
+									Global Citizen is a movement of engaged citizens who are using their collective
+									voice to end extreme poverty by 2030.
+								</ion-card-content>
+							</ion-card>
+						</a>
+
+
+
+						<ion-label style="color: gray" id="prev">
+							<ion-icon name="arrow-back-outline"></ion-icon> Previous
+						</ion-label>
+						<ion-label style="color:#32d74b; float: right;" id="next">Next <ion-icon
+								name="arrow-forward-outline"></ion-icon>
+						</ion-label>
+					</div>
+
+				</ion-tab>
+
+				<ion-tab tab="search">
+				
+					<ion-toolbar>
+						<ion-segment value="state" style="width: 95%; margin-top: 10px;" onclick="segmentChanged()" id="segment">
+							<ion-segment-button value="state">
+								<ion-label>State</ion-label>
+							</ion-segment-button>
+							<ion-segment-button value="district">
+								<ion-label>School District</ion-label>
+							</ion-segment-button>
+						</ion-segment>
+					</ion-toolbar>
+					<ion-toolbar>
+						<ion-searchbar style="padding-top: 15px;" id="searchBar"></ion-searchbar>
+					</ion-toolbar>
+				
+					<div style="height: 100%; display: none;" id="mainDiv">
+						
+						<ion-list style="overflow: auto; height: 100%; position: relative; top: 0px;" id="districtList">
+							<ion-item id="1" onclick="districtAutofill(this.id, this.innerHTML)">Academia Antonia Alonso</ion-item>
+							<ion-item id="2" onclick="districtAutofill(this.id, this.innerHTML)">Academy of Dover Charter School</ion-item>
+							<ion-item id="3" onclick="districtAutofill(this.id, this.innerHTML)">Appoquinimink School District</ion-item>
+							<ion-item id="4" onclick="districtAutofill(this.id, this.innerHTML)">Brandywine School District</ion-item>
+							<ion-item id="5" onclick="districtAutofill(this.id, this.innerHTML)">Caesar Rodney School District</ion-item>
+							<ion-item id="7" onclick="districtAutofill(this.id, this.innerHTML)">Cape Henlopen School District</ion-item>
+							<ion-item id="8" onclick="districtAutofill(this.id, this.innerHTML)">Capital School District</ion-item>
+							<ion-item id="9" onclick="districtAutofill(this.id, this.innerHTML)">Charter School of New Castle</ion-item>
+							<ion-item id="11" onclick="districtAutofill(this.id, this.innerHTML)">Christina School District</ion-item>
+							<ion-item id="12" onclick="districtAutofill(this.id, this.innerHTML)">Colonial School District</ion-item>
+							<ion-item id="13" onclick="districtAutofill(this.id, this.innerHTML)">Delaware Academy of Public Safety and Security</ion-item>
+							<ion-item id="14" onclick="districtAutofill(this.id, this.innerHTML)">Delaware Military Academy</ion-item>
+							<ion-item id="15" onclick="districtAutofill(this.id, this.innerHTML)">Delmar School District</ion-item>
+							<ion-item id="17" onclick="districtAutofill(this.id, this.innerHTML)">Early College High School at Del State</ion-item>
+							<ion-item id="18" onclick="districtAutofill(this.id, this.innerHTML)">East Side Charter School</ion-item>
+							<ion-item id="19" onclick="districtAutofill(this.id, this.innerHTML)">Edison (Thomas A.) Charter School</ion-item>
+							<ion-item id="20" onclick="districtAutofill(this.id, this.innerHTML)">First State Military Academy</ion-item>
+							<ion-item id="21" onclick="districtAutofill(this.id, this.innerHTML)">First State Montessori Academy</ion-item>
+							<ion-item id="22" onclick="districtAutofill(this.id, this.innerHTML)">Freire Charter School Wilmington</ion-item>
+							<ion-item id="23" onclick="districtAutofill(this.id, this.innerHTML)">Gateway Lab School</ion-item>
+							<ion-item id="24" onclick="districtAutofill(this.id, this.innerHTML)">Great Oaks Charter School</ion-item>
+							<ion-item id="25" onclick="districtAutofill(this.id, this.innerHTML)">Indian River School District</ion-item>
+							<ion-item id="26" onclick="districtAutofill(this.id, this.innerHTML)">Kuumba Academy Charter School</ion-item>
+							<ion-item id="27" onclick="districtAutofill(this.id, this.innerHTML)">Lake Forest School District</ion-item>
+							<ion-item id="28" onclick="districtAutofill(this.id, this.innerHTML)">Las Americas Aspira Academy</ion-item>
+							<ion-item id="29" onclick="districtAutofill(this.id, this.innerHTML)">Laurel School District</ion-item>
+							<ion-item id="30" onclick="districtAutofill(this.id, this.innerHTML)">Milford School District</ion-item>
+							<ion-item id="31" onclick="districtAutofill(this.id, this.innerHTML)">MOT Charter School</ion-item>
+							<ion-item id="32" onclick="districtAutofill(this.id, this.innerHTML)">New Castle County Vocational-Technical School District</ion-item>
+							<ion-item id="33" onclick="districtAutofill(this.id, this.innerHTML)">Newark Charter School</ion-item>
+							<ion-item id="34" onclick="districtAutofill(this.id, this.innerHTML)">Odyssey Charter School</ion-item>
+							<ion-item id="35" onclick="districtAutofill(this.id, this.innerHTML)">POLYTECH School District</ion-item>
+							<ion-item id="36" onclick="districtAutofill(this.id, this.innerHTML)">Positive Outcomes Charter School</ion-item>
+							<ion-item id="37" onclick="districtAutofill(this.id, this.innerHTML)">Prestige Academy</ion-item>
+							<ion-item id="38" onclick="districtAutofill(this.id, this.innerHTML)">Providence Creek Academy Charter School</ion-item>
+							<ion-item id="39" onclick="districtAutofill(this.id, this.innerHTML)">Red Clay Consolidated School District</ion-item>
+							<ion-item id="40" onclick="districtAutofill(this.id, this.innerHTML)">Seaford School District</ion-item>
+							<ion-item id="41" onclick="districtAutofill(this.id, this.innerHTML)">Smyrna School District</ion-item>
+							<ion-item id="42" onclick="districtAutofill(this.id, this.innerHTML)">Sussex Academy</ion-item>
+							<ion-item id="43" onclick="districtAutofill(this.id, this.innerHTML)">Sussex Montessori School</ion-item>
+							<ion-item id="44" onclick="districtAutofill(this.id, this.innerHTML)">Sussex Technical School District</ion-item>
+							<ion-item id="45" onclick="districtAutofill(this.id, this.innerHTML)">Woodbridge School District</ion-item>
+						</ion-list>
+					</div>
+					<ion-list style="overflow: auto; height: 100%; position: relative; top: 0px;" id="list">
+						<ion-item id="01" onclick="autofill(this.id, this.innerHTML)">Alabama</ion-item>
+						<ion-item id="02" onclick="autofill(this.id, this.innerHTML)">Alaska</ion-item>
+						<ion-item id="04" onclick="autofill(this.id, this.innerHTML)">Arizona</ion-item>
+						<ion-item id="05" onclick="autofill(this.id, this.innerHTML)">Arkansas</ion-item>
+						<ion-item id="06" onclick="autofill(this.id, this.innerHTML)">California</ion-item>
+						<ion-item id="08" onclick="autofill(this.id, this.innerHTML)">Colorado</ion-item>
+						<ion-item id="09" onclick="autofill(this.id, this.innerHTML)">Connecticut</ion-item>
+						<ion-item id="10" onclick="autofill(this.id, this.innerHTML)">Delaware</ion-item>
+						<ion-item id="12" onclick="autofill(this.id, this.innerHTML)">Florida</ion-item>
+						<ion-item id="13" onclick="autofill(this.id, this.innerHTML)">Georgia</ion-item>
+						<ion-item id="15" onclick="autofill(this.id, this.innerHTML)">Hawaii</ion-item>
+						<ion-item id="16" onclick="autofill(this.id, this.innerHTML)">Idaho</ion-item>
+						<ion-item id="17" onclick="autofill(this.id, this.innerHTML)">Illinois</ion-item>
+						<ion-item id="18" onclick="autofill(this.id, this.innerHTML)">Indiana</ion-item>
+						<ion-item id="19" onclick="autofill(this.id, this.innerHTML)">Iowa</ion-item>
+						<ion-item id="20" onclick="autofill(this.id, this.innerHTML)">Kansas</ion-item>
+						<ion-item id="21" onclick="autofill(this.id, this.innerHTML)">Kentucky</ion-item>
+						<ion-item id="22" onclick="autofill(this.id, this.innerHTML)">Louisiana</ion-item>
+						<ion-item id="23" onclick="autofill(this.id, this.innerHTML)">Maine</ion-item>
+						<ion-item id="24" onclick="autofill(this.id, this.innerHTML)">Maryland</ion-item>
+						<ion-item id="25" onclick="autofill(this.id, this.innerHTML)">Massachusetts</ion-item>
+						<ion-item id="26" onclick="autofill(this.id, this.innerHTML)">Michigan</ion-item>
+						<ion-item id="27" onclick="autofill(this.id, this.innerHTML)">Minnesota</ion-item>
+						<ion-item id="28" onclick="autofill(this.id, this.innerHTML)">Mississippi</ion-item>
+						<ion-item id="29" onclick="autofill(this.id, this.innerHTML)">Missouri</ion-item>
+						<ion-item id="30" onclick="autofill(this.id, this.innerHTML)">Montana</ion-item>
+						<ion-item id="31" onclick="autofill(this.id, this.innerHTML)">Nebraska</ion-item>
+						<ion-item id="32" onclick="autofill(this.id, this.innerHTML)">Nevada</ion-item>
+						<ion-item id="33" onclick="autofill(this.id, this.innerHTML)">New Hampshire</ion-item>
+						<ion-item id="34" onclick="autofill(this.id, this.innerHTML)">New Jersey</ion-item>
+						<ion-item id="35" onclick="autofill(this.id, this.innerHTML)">New Mexico</ion-item>
+						<ion-item id="36" onclick="autofill(this.id, this.innerHTML)">New York</ion-item>
+						<ion-item id="37" onclick="autofill(this.id, this.innerHTML)">North Carolina</ion-item>
+						<ion-item id="38" onclick="autofill(this.id, this.innerHTML)">North Dakota</ion-item>
+						<ion-item id="39" onclick="autofill(this.id, this.innerHTML)">Ohio</ion-item>
+						<ion-item id="40" onclick="autofill(this.id, this.innerHTML)">Oklahoma</ion-item>
+						<ion-item id="41" onclick="autofill(this.id, this.innerHTML)">Oregon</ion-item>
+						<ion-item id="42" onclick="autofill(this.id, this.innerHTML)">Pennsylvania</ion-item>
+						<ion-item id="44" onclick="autofill(this.id, this.innerHTML)">Rhode Island</ion-item>
+						<ion-item id="45" onclick="autofill(this.id, this.innerHTML)">South Carolina</ion-item>
+						<ion-item id="46" onclick="autofill(this.id, this.innerHTML)">South Dakota</ion-item>
+						<ion-item id="47" onclick="autofill(this.id, this.innerHTML)">Tennessee</ion-item>
+						<ion-item id="48" onclick="autofill(this.id, this.innerHTML)">Texas</ion-item>
+						<ion-item id="49" onclick="autofill(this.id, this.innerHTML)">Utah</ion-item>
+						<ion-item id="50" onclick="autofill(this.id, this.innerHTML)">Vermont</ion-item>
+						<ion-item id="51" onclick="autofill(this.id, this.innerHTML)">Virginia</ion-item>
+						<ion-item id="53" onclick="autofill(this.id, this.innerHTML)">Washington</ion-item>
+						<ion-item id="54" onclick="autofill(this.id, this.innerHTML)">West Virginia</ion-item>
+						<ion-item id="55" onclick="autofill(this.id, this.innerHTML)">Wisconsin</ion-item>
+						<ion-item id="56" onclick="autofill(this.id, this.innerHTML)">Wyoming</ion-item>
+					</ion-list>
+				
+				
+					</div>
+				
+				</ion-tab>
+
+				<ion-tab-bar slot="bottom">
+					<ion-tab-button tab="watchlist">
+						<ion-label class="tabLabels">Donate</ion-label>
+						<ion-icon name="heart-circle-outline"></ion-icon>
+					</ion-tab-button>
+					<ion-tab-button tab="discover">
+						<ion-label class="tabLabels">Discover</ion-label>
+						<ion-icon name="planet-outline"></ion-icon>
+					</ion-tab-button>
+					<ion-tab-button tab="search" id="searchIcon">
+						<ion-label class="tabLabels">Search</ion-label>
+						<ion-icon name="search-outline"></ion-icon>
+
+					</ion-tab-button>
+
+
+				</ion-tab-bar>
+
+
+			</ion-tabs>
+		</ion-app>
+	</body>
+
+	<!--JQuery-->
+	<script src="https://code.jquery.com/jquery-3.6.0.js"
+		integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='main.js')}}"></script>
+
+</body>
+
+</html>
