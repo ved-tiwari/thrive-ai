@@ -4,16 +4,16 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
 	<meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" href="icons/icon.png">
-    <link rel="apple-touch-icon" href="touch-icon-iphone.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="touch-icon-iphone-retina.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="touch-icon-ipad-retina.png">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Fitness Tools">
+	<link rel="apple-touch-icon" href="icons/icon.png">
+	<link rel="apple-touch-icon" href="touch-icon-iphone.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="touch-icon-ipad.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="touch-icon-iphone-retina.png">
+	<link rel="apple-touch-icon" sizes="167x167" href="touch-icon-ipad-retina.png">
+
+	<meta name="apple-mobile-web-app-title" content="Thrive AI">
 
 	<title>Thrive AI</title>
 
@@ -29,10 +29,10 @@
 		window.toastController = toastController;
 
 		import { alertController } from 'https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/index.esm.js';
-      	window.alertController = alertController;
+		window.alertController = alertController;
 	</script>
 
-	
+
 
 	<!--Chart JS-->
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
@@ -61,9 +61,12 @@
 						<div class="header">
 							<br><br>
 							<ion-title class="hello">
-								<ion-icon name="analytics-outline" style="color: #32d74b; left: 30px">
+
 								</ion-icon>
-								Thrive AI<br>
+								<div style="width: 100%">
+									<span style="position: absolute; left: 155px;">Thrive AI<br></span>
+									<ion-icon name="analytics-outline" style="color: #32d74b; left: 30px">
+								</div>
 							</ion-title>
 							<br><br>
 
@@ -79,12 +82,13 @@
 
 						<div class="chart">
 							<ion-label style="color: #646565; font-size: 22px; top: 7px; left: 4px; font-weight: bold;">
-								Poverty rates in <span id="stateName">
+								<span id="rateCount">Poverty count in</span> <span id="stateName">
 									<ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
 								</span>
 							</ion-label>
 							<div style="height:5px"></div>
 							<canvas id="charts"></canvas>
+							<canvas id="districtCharts" style="display: none;"></canvas>
 							<br>
 							<div class="news">
 								<div class="breaks"></div>
@@ -103,7 +107,12 @@
 												<h2 id="defaultState">
 													<ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
 												</h2>
-												<h5>Current Poverty Rate: <span id="currLocationPov" style="color: #32d74b;" style="position: absolute; width: 20%; left: 140px; top: 32px;"><ion-skeleton-text animated style="width: 20%"></ion-skeleton-text></span></h5>
+												<h5>Current Poverty Count: <span id="currLocationPov"
+														style="color: #32d74b;"
+														style="position: absolute; width: 20%; left: 140px; top: 32px;">
+														<ion-skeleton-text animated style="width: 20%">
+														</ion-skeleton-text>
+													</span></h5>
 												<ion-icon name="navigate-outline"
 													style="position: absolute; left: 90%; top: 37%;"></ion-icon>
 											</ion-label>
@@ -246,66 +255,110 @@
 				</ion-tab>
 
 				<ion-tab tab="search">
-				
+
+
 					<ion-toolbar>
-						<ion-segment value="state" style="width: 95%; margin-top: 10px;" onclick="segmentChanged()" id="segment">
+						<ion-segment value="state" style="width: 95%; margin-top: 10px;" onclick="segmentChanged()"
+							id="segment">
 							<ion-segment-button value="state">
 								<ion-label>State</ion-label>
 							</ion-segment-button>
 							<ion-segment-button value="district">
-								<ion-label>School District</ion-label>
+								<ion-label>DE - School District</ion-label>
 							</ion-segment-button>
 						</ion-segment>
 					</ion-toolbar>
 					<ion-toolbar>
 						<ion-searchbar style="padding-top: 15px;" id="searchBar"></ion-searchbar>
 					</ion-toolbar>
-				
+
 					<div style="height: 100%; display: none;" id="mainDiv">
-						
+
 						<ion-list style="overflow: auto; height: 100%; position: relative; top: 0px;" id="districtList">
-							<ion-item id="1" onclick="districtAutofill(this.id, this.innerHTML)">Academia Antonia Alonso</ion-item>
-							<ion-item id="2" onclick="districtAutofill(this.id, this.innerHTML)">Academy of Dover Charter School</ion-item>
-							<ion-item id="3" onclick="districtAutofill(this.id, this.innerHTML)">Appoquinimink School District</ion-item>
-							<ion-item id="4" onclick="districtAutofill(this.id, this.innerHTML)">Brandywine School District</ion-item>
-							<ion-item id="5" onclick="districtAutofill(this.id, this.innerHTML)">Caesar Rodney School District</ion-item>
-							<ion-item id="7" onclick="districtAutofill(this.id, this.innerHTML)">Cape Henlopen School District</ion-item>
-							<ion-item id="8" onclick="districtAutofill(this.id, this.innerHTML)">Capital School District</ion-item>
-							<ion-item id="9" onclick="districtAutofill(this.id, this.innerHTML)">Charter School of New Castle</ion-item>
-							<ion-item id="11" onclick="districtAutofill(this.id, this.innerHTML)">Christina School District</ion-item>
-							<ion-item id="12" onclick="districtAutofill(this.id, this.innerHTML)">Colonial School District</ion-item>
-							<ion-item id="13" onclick="districtAutofill(this.id, this.innerHTML)">Delaware Academy of Public Safety and Security</ion-item>
-							<ion-item id="14" onclick="districtAutofill(this.id, this.innerHTML)">Delaware Military Academy</ion-item>
-							<ion-item id="15" onclick="districtAutofill(this.id, this.innerHTML)">Delmar School District</ion-item>
-							<ion-item id="17" onclick="districtAutofill(this.id, this.innerHTML)">Early College High School at Del State</ion-item>
-							<ion-item id="18" onclick="districtAutofill(this.id, this.innerHTML)">East Side Charter School</ion-item>
-							<ion-item id="19" onclick="districtAutofill(this.id, this.innerHTML)">Edison (Thomas A.) Charter School</ion-item>
-							<ion-item id="20" onclick="districtAutofill(this.id, this.innerHTML)">First State Military Academy</ion-item>
-							<ion-item id="21" onclick="districtAutofill(this.id, this.innerHTML)">First State Montessori Academy</ion-item>
-							<ion-item id="22" onclick="districtAutofill(this.id, this.innerHTML)">Freire Charter School Wilmington</ion-item>
-							<ion-item id="23" onclick="districtAutofill(this.id, this.innerHTML)">Gateway Lab School</ion-item>
-							<ion-item id="24" onclick="districtAutofill(this.id, this.innerHTML)">Great Oaks Charter School</ion-item>
-							<ion-item id="25" onclick="districtAutofill(this.id, this.innerHTML)">Indian River School District</ion-item>
-							<ion-item id="26" onclick="districtAutofill(this.id, this.innerHTML)">Kuumba Academy Charter School</ion-item>
-							<ion-item id="27" onclick="districtAutofill(this.id, this.innerHTML)">Lake Forest School District</ion-item>
-							<ion-item id="28" onclick="districtAutofill(this.id, this.innerHTML)">Las Americas Aspira Academy</ion-item>
-							<ion-item id="29" onclick="districtAutofill(this.id, this.innerHTML)">Laurel School District</ion-item>
-							<ion-item id="30" onclick="districtAutofill(this.id, this.innerHTML)">Milford School District</ion-item>
-							<ion-item id="31" onclick="districtAutofill(this.id, this.innerHTML)">MOT Charter School</ion-item>
-							<ion-item id="32" onclick="districtAutofill(this.id, this.innerHTML)">New Castle County Vocational-Technical School District</ion-item>
-							<ion-item id="33" onclick="districtAutofill(this.id, this.innerHTML)">Newark Charter School</ion-item>
-							<ion-item id="34" onclick="districtAutofill(this.id, this.innerHTML)">Odyssey Charter School</ion-item>
-							<ion-item id="35" onclick="districtAutofill(this.id, this.innerHTML)">POLYTECH School District</ion-item>
-							<ion-item id="36" onclick="districtAutofill(this.id, this.innerHTML)">Positive Outcomes Charter School</ion-item>
-							<ion-item id="37" onclick="districtAutofill(this.id, this.innerHTML)">Prestige Academy</ion-item>
-							<ion-item id="38" onclick="districtAutofill(this.id, this.innerHTML)">Providence Creek Academy Charter School</ion-item>
-							<ion-item id="39" onclick="districtAutofill(this.id, this.innerHTML)">Red Clay Consolidated School District</ion-item>
-							<ion-item id="40" onclick="districtAutofill(this.id, this.innerHTML)">Seaford School District</ion-item>
-							<ion-item id="41" onclick="districtAutofill(this.id, this.innerHTML)">Smyrna School District</ion-item>
-							<ion-item id="42" onclick="districtAutofill(this.id, this.innerHTML)">Sussex Academy</ion-item>
-							<ion-item id="43" onclick="districtAutofill(this.id, this.innerHTML)">Sussex Montessori School</ion-item>
-							<ion-item id="44" onclick="districtAutofill(this.id, this.innerHTML)">Sussex Technical School District</ion-item>
-							<ion-item id="45" onclick="districtAutofill(this.id, this.innerHTML)">Woodbridge School District</ion-item>
+							<ion-item id="1" onclick="districtAutofill(this.id, this.innerText)">Academia Antonia Alonso
+							</ion-item>
+							<ion-item id="2" onclick="districtAutofill(this.id, this.innerText)">Academy of Dover
+								Charter School</ion-item>
+							<ion-item id="3" onclick="districtAutofill(this.id, this.innerText)">Appoquinimink School
+								District</ion-item>
+							<ion-item id="4" onclick="districtAutofill(this.id, this.innerText)">Brandywine School
+								District</ion-item>
+							<ion-item id="5" onclick="districtAutofill(this.id, this.innerText)">Caesar Rodney School
+								District</ion-item>
+							<ion-item id="7" onclick="districtAutofill(this.id, this.innerText)">Cape Henlopen School
+								District</ion-item>
+							<ion-item id="8" onclick="districtAutofill(this.id, this.innerText)">Capital School District
+							</ion-item>
+							<ion-item id="9" onclick="districtAutofill(this.id, this.innerText)">Charter School of New
+								Castle</ion-item>
+							<ion-item id="11" onclick="districtAutofill(this.id, this.innerText)">Christina School
+								District</ion-item>
+							<ion-item id="12" onclick="districtAutofill(this.id, this.innerText)">Colonial School
+								District</ion-item>
+							<ion-item id="13" onclick="districtAutofill(this.id, this.innerText)">Delaware Academy of
+								Public Safety and Security</ion-item>
+							<ion-item id="14" onclick="districtAutofill(this.id, this.innerText)">Delaware Military
+								Academy</ion-item>
+							<ion-item id="15" onclick="districtAutofill(this.id, this.innerText)">Delmar School District
+							</ion-item>
+							<ion-item id="17" onclick="districtAutofill(this.id, this.innerText)">Early College High
+								School at Del State</ion-item>
+							<ion-item id="18" onclick="districtAutofill(this.id, this.innerText)">East Side Charter
+								School</ion-item>
+							<ion-item id="19" onclick="districtAutofill(this.id, this.innerText)">Edison (Thomas A.)
+								Charter School</ion-item>
+							<ion-item id="20" onclick="districtAutofill(this.id, this.innerText)">First State Military
+								Academy</ion-item>
+							<ion-item id="21" onclick="districtAutofill(this.id, this.innerText)">First State Montessori
+								Academy</ion-item>
+							<ion-item id="22" onclick="districtAutofill(this.id, this.innerText)">Freire Charter School
+								Wilmington</ion-item>
+							<ion-item id="23" onclick="districtAutofill(this.id, this.innerText)">Gateway Lab School
+							</ion-item>
+							<ion-item id="24" onclick="districtAutofill(this.id, this.innerText)">Great Oaks Charter
+								School</ion-item>
+							<ion-item id="25" onclick="districtAutofill(this.id, this.innerText)">Indian River School
+								District</ion-item>
+							<ion-item id="26" onclick="districtAutofill(this.id, this.innerText)">Kuumba Academy Charter
+								School</ion-item>
+							<ion-item id="27" onclick="districtAutofill(this.id, this.innerText)">Lake Forest School
+								District</ion-item>
+							<ion-item id="28" onclick="districtAutofill(this.id, this.innerText)">Las Americas Aspira
+								Academy</ion-item>
+							<ion-item id="29" onclick="districtAutofill(this.id, this.innerText)">Laurel School District
+							</ion-item>
+							<ion-item id="30" onclick="districtAutofill(this.id, this.innerText)">Milford School
+								District</ion-item>
+							<ion-item id="31" onclick="districtAutofill(this.id, this.innerText)">MOT Charter School
+							</ion-item>
+							<ion-item id="32" onclick="districtAutofill(this.id, this.innerText)">New Castle County
+								Vocational-Technical School District</ion-item>
+							<ion-item id="33" onclick="districtAutofill(this.id, this.innerText)">Newark Charter School
+							</ion-item>
+							<ion-item id="34" onclick="districtAutofill(this.id, this.innerText)">Odyssey Charter School
+							</ion-item>
+							<ion-item id="35" onclick="districtAutofill(this.id, this.innerText)">POLYTECH School
+								District</ion-item>
+							<ion-item id="36" onclick="districtAutofill(this.id, this.innerText)">Positive Outcomes
+								Charter School</ion-item>
+							<ion-item id="37" onclick="districtAutofill(this.id, this.innerText)">Prestige Academy
+							</ion-item>
+							<ion-item id="38" onclick="districtAutofill(this.id, this.innerText)">Providence Creek
+								Academy Charter School</ion-item>
+							<ion-item id="39" onclick="districtAutofill(this.id, this.innerText)">Red Clay Consolidated
+								School District</ion-item>
+							<ion-item id="40" onclick="districtAutofill(this.id, this.innerText)">Seaford School
+								District</ion-item>
+							<ion-item id="41" onclick="districtAutofill(this.id, this.innerText)">Smyrna School District
+							</ion-item>
+							<ion-item id="42" onclick="districtAutofill(this.id, this.innerText)">Sussex Academy
+							</ion-item>
+							<ion-item id="43" onclick="districtAutofill(this.id, this.innerText)">Sussex Montessori
+								School</ion-item>
+							<ion-item id="44" onclick="districtAutofill(this.id, this.innerText)">Sussex Technical
+								School District</ion-item>
+							<ion-item id="45" onclick="districtAutofill(this.id, this.innerText)">Woodbridge School
+								District</ion-item>
 						</ion-list>
 					</div>
 					<ion-list style="overflow: auto; height: 100%; position: relative; top: 0px;" id="list">
@@ -360,10 +413,10 @@
 						<ion-item id="55" onclick="autofill(this.id, this.innerHTML)">Wisconsin</ion-item>
 						<ion-item id="56" onclick="autofill(this.id, this.innerHTML)">Wyoming</ion-item>
 					</ion-list>
-				
-				
+
+
 					</div>
-				
+
 				</ion-tab>
 
 				<ion-tab-bar slot="bottom">
