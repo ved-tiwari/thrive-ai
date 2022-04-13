@@ -1,8 +1,3 @@
-window.onerror = function(msg, url, linenumber) {
-    alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
-    return true;
-}
-
 // Use matchMedia to check the user preference
 const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 console.log(prefersDark)
@@ -126,6 +121,8 @@ function displayData(prev, pred, years) {
         predicted[i] = predicted[i] / 1000;
     }
 
+    document.getElementById("districtCharts").style.display = "none"
+    document.getElementById("charts").style.display = "block"
     var ctx = document.getElementById("charts").getContext("2d");
     window.bar = new Chart(ctx, {
         // The type of chart we want to create
@@ -396,34 +393,60 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-defaultRegion = "";
-function func(data) {
-    defaultLocation = data.region;
-    $("#defaultState").html(data.region);
-    $("#stateName").html(data.region);
-    var yearCall = "";
-    var totalYears = "";
-    for (let i = 0; i < 21; i++) {
-        yr = 2000 + i;
-        totalYears += yr.toString() + " ";
-        yearCall += "&YEAR=" + yr;
+allDefaultStateData = [];
+
+function func(data, defaultToState) {
+    if (defaultToState) {
+        $("#rateCount").html("Poverty count in ")
+        defaultLocation = "";
+
+        localStorage.setItem("defaultToState", "true")
+
+        if (localStorage.getItem("recentState") == null) {
+            defaultLocation = data.region;
+        } else {
+            defaultLocation = localStorage.getItem("recentState")
+        }
+
+        var yearCall = "";
+        var totalYears = "";
+        for (let i = 0; i < 21; i++) {
+            yr = 2000 + i;
+            totalYears += yr.toString() + " ";
+            yearCall += "&YEAR=" + yr;
+        }
+
+        fetch(
+            `https://api.census.gov/data/timeseries/poverty/saipe?get=NAME,SAEPOVALL_PT&for=state:${FIPSLocator(
+                defaultLocation
+            )}${yearCall}`
+        )
+            .then((response) => response.json())
+            .then((theData) => {
+
+                allDefaultStateData = [defaultLocation, numberWithCommas(theData[21][1])];
+                localStorage.setItem("allDefaultStateData", JSON.stringify(allDefaultStateData));
+                allDefaultStateData = JSON.parse(localStorage.getItem("allDefaultStateData"));
+
+                $("#defaultState").html(allDefaultStateData[0]);
+                $("#stateName").html(allDefaultStateData[0]);
+                $("#currLocationPov").html(allDefaultStateData[1])
+                sendData(theData, totalYears)
+            });
     }
 
-    fetch(
-        `https://api.census.gov/data/timeseries/poverty/saipe?get=NAME,SAEPOVALL_PT&for=state:${FIPSLocator(
-            data.region
-        )}${yearCall}`
-    )
-        .then((response) => response.json())
-        .then((theData) => {
-            $("#currLocationPov").html(numberWithCommas(theData[21][1]))
-            sendData(theData, totalYears)
-        });
 }
 
 fetch("https://ipapi.co/json/")
     .then((response) => response.text())
-    .then((data) => func(JSON.parse(data)));
+    .then((data) => {
+        if (localStorage.getItem("defaultToState") == "false") {
+            func(JSON.parse(data), false)
+        } else {
+            func(JSON.parse(data), true)
+        }
+
+    });
 
 function dismissModal() {
     if (currentModal) {
@@ -467,30 +490,6 @@ function handleInput(event) {
     });
 }
 
-/*
-fetch('https://gnews.io/api/v4/search?q=poverty&token=414779bc143d5d4775465a56f639719e')
-  .then(response => response.text())
-  .then(data => iterate(JSON.parse(data)));
-
-
-//news cards
-var allData = [];
-function iterate(data) {
-  data = data.articles;
-
-  idName = -1;
-  data.forEach(element => {
-    idName++;
-    varNameImg = "#im" + idName;
-    $(varNameImg).attr("src", element.image);
-
-    varNameTitle = "#t" + idName
-    $(varNameTitle).html(element.title);
-
-    allData.push(element.url)
-  })
-}
-*/
 fetch('https://newsdata.io/api/1/news?apikey=pub_54761cda437166ec7a38dbf4cfc5db8661a2&q=poverty')
     .then(response => response.text())
     .then(data => iterate(JSON.parse(data).results));
@@ -567,18 +566,18 @@ customElements.define(
     class ModalContent extends HTMLElement {
         connectedCallback() {
             this.innerHTML = `
-    <ion-header translucent>
-      <ion-toolbar style="padding-top: 0px;">
-        <ion-title>Modal Content</ion-title>
-        <ion-buttons slot="end">
-          <ion-button onclick="dismissModal()">Close</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content fullscreen>
-      <iframe src="${currArticle}" title="news" style="border: none; height: 100%; width: 100%"></iframe>
-    </ion-content>
-  `;
+  <ion-header translucent>
+    <ion-toolbar style="padding-top: 0px;">
+      <ion-title>Modal Content</ion-title>
+      <ion-buttons slot="end">
+        <ion-button onclick="dismissModal()">Close</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content fullscreen>
+    <iframe src="${currArticle}" title="news" style="border: none; height: 100%; width: 100%"></iframe>
+  </ion-content>
+`;
         }
     }
 );
@@ -647,53 +646,18 @@ $("#prev").click(function () {
 })
 
 
-function updateRecent(arr) {
-
-    arr.forEach(element => {
-        fetch("https://api.census.gov/data/timeseries/poverty/saipe?get=NAME,SAEPOVALL_PT&for=state:" + FIPSLocator(element) + "&YEAR=2020")
-            .then(response => response.json())
-            .then(data => {
-
-                document.getElementById("newItems").innerHTML += `
-            <ion-item id="default">
-              <ion-label>
-                <h2>
-                  ${element}
-                </h2>
-                <h5>Current Poverty Rate: <span style="color:#32d74b">${numberWithCommas(data[1][1])}</span></h5>
-
-                <ion-icon name="time-outline" style="position: absolute; left: 90%; top: 37%;"></ion-icon>
-              </ion-label>
-            </ion-item>`
-            });
+//recent searches
+theHistory = []
 
 
-    })
-
-
-}
-
-var pastHistory = [];
-
-if (localStorage.getItem("history") != null) {
-    pastHistory = JSON.parse(localStorage.getItem("history"));
-    updateRecent(pastHistory);
-}
-
-var count = 0
 function autofill(theID, theStateName) {
+    localStorage.setItem("defaultToState", "true")
     document.getElementById("searchBar").value = theStateName;
-
-    clicked(theID)
-
-
-
-    pastHistory.push(theStateName)
-    localStorage.setItem("history", JSON.stringify(pastHistory));
-    //document.getElementById("newItems").innerHTML = "";
-    updateRecent(pastHistory.reverse())
+    localStorage.setItem("current", "state");
+    localStorage.setItem("recentState", theStateName)
+    localStorage.setItem("history", JSON.stringify(history))
+    location.reload();
 }
-
 
 function segmentChanged() {
     var segmentVal = document.getElementById("segment").value;
@@ -710,120 +674,143 @@ function segmentChanged() {
     }
 }
 
-$("#clear").click(function () {
-    localStorage.clear()
-    $("#newItems").slideUp();
-    setTimeout(() => { $("#newItems").html("") }, 2000);
-})
-
-// Store all school districts in localStorage
-localDistricts = []
-if (localStorage.getItem("districts") != null) {
-    localDistricts = JSON.parse(localStorage.getItem("districts"));
-    localDistricts = [...new Set(localDistricts)];
-    for (let i = 0; i < localDistricts.length; i++) {
-        districtAutofill(0, localDistricts[i], true)
-    }
-}
-
 
 function updateRecentDistrict(districtName, currRate) {
-    localDistricts.push(districtName)
+    //localDistricts.push(districtName)
     document.getElementById("newItems").innerHTML += `
-    <ion-item id="default">
-      <ion-label>
-        <h2>
-          ${districtName}
-        </h2>
-        <h5>Current Low-Income Count: <span style="color:#32d74b">${numberWithCommas(currRate)}</span></h5>
+  <ion-item id="default">
+    <ion-label>
+      <h2>
+        ${districtName}
+      </h2>
+      <h5>Current Low-Income Count: <span style="color:#32d74b">${numberWithCommas(currRate)}</span></h5>
 
-        <ion-icon name="school-outline" style="position: absolute; left: 90%; top: 37%;"></ion-icon>
-      </ion-label>
-    </ion-item>`
-    localStorage.setItem("districts", JSON.stringify(localDistricts))
+      <ion-icon name="school-outline" style="position: absolute; left: 90%; top: 37%;"></ion-icon>
+    </ion-label>
+  </ion-item>`
+    //localStorage.setItem("districts", JSON.stringify(localDistricts))
 }
 
-function displayDistrictData(districtData, totalYears) {
-
+//Auto Caps
+function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
 }
 
-localDistricts.reverse();
-function districtAutofill(theID, theDistrictName, execute) {
+//localDistricts.reverse();
 
-    if (!execute) {
-        document.getElementById("searchBar").value = theDistrictName;
-        $("#stateName").html(theDistrictName)
-    }
+function districtAutofill(theID, theDistrictName) {
+    localStorage.setItem("current", "school")
+    localStorage.setItem("currSchool", theDistrictName)
+    localStorage.setItem("defaultToState", "false")
+    location.reload()
+}
 
 
-    fetch(
-        `https://data.delaware.gov/resource/6i7v-xnmf.json?district=${theDistrictName}&race=All%20Students&gender=All%20Students&grade=All%20Students&specialdemo=Low-Income&geography=All%20Students&schoolcode=0`
-    )
+if (localStorage.getItem("current") == "school") {
+
+    chartDistrict(localStorage.getItem("currSchool"))
+}
+
+function chartDistrict(theDistrictName) {
+    $("#rateCount").html("Low Income Count in ")
+    allDefaultStateData = JSON.parse(localStorage.getItem("allDefaultStateData"))
+    $("#defaultState").html(allDefaultStateData[0]);
+    $("#stateName").html(allDefaultStateData[0]);
+    $("#currLocationPov").html(allDefaultStateData[1])
+
+    var request = `https://data.delaware.gov/resource/6i7v-xnmf.json?district=${theDistrictName}&race=All%20Students&gender=All%20Students&grade=All%20Students&specialdemo=Low-Income&geography=All%20Students&schoolcode=0`
+    console.log(request)
+
+    document.getElementById("searchBar").value = theDistrictName;
+    $("#stateName").html(theDistrictName)
+
+    //get data from open data portal
+    allDistrictData = [];
+    allDistrictYears = []
+    allDistrictPopulation = []
+
+    fetch(request)
         .then((response) => response.json())
         .then((data) => {
-            console.log(data)
-            updateRecentDistrict(data[data.length - 1].district, data[data.length - 1].students)
+            allDistrictData = data;
 
-            allDistrictYears = []
-            allDistrictPopulation = []
             for (let i = 0; i < data.length; i++) {
                 allDistrictYears.push(data[i].schoolyear)
                 allDistrictPopulation.push(data[i].students)
-
-                try {
-                    window.bar.destroy();
-                    var ctx = document.getElementById("charts").getContext("2d");
-                    window.bar = new Chart(ctx, {
-                        // The type of chart we want to create
-                        type: "line",
-
-                        // The data for our dataset
-                        data: {
-                            labels: allDistrictYears,
-                            datasets: [
-                                {
-                                    label: "Low-Income Student Count",
-                                    borderColor: "rgb(50, 215, 75)",
-                                    data: allDistrictPopulation,
-                                    fill: false,
-                                    lineTension: 0,
-                                }
-                            ],
-                        },
-
-                        // Configuration options go here
-                        options: {
-                            scales: {
-                                xAxes: [
-                                    {
-                                        gridLines: {
-                                            display: false,
-                                            borderColor: "white",
-                                        },
-                                    },
-                                ],
-                                yAxes: [
-                                    {
-                                        gridLines: {
-                                            color: "#303030",
-                                        },
-                                        scaleLabel: {
-                                            display: true,
-                                            labelString: "Poverty Rate",
-                                        },
-                                    },
-                                ],
-                            },
-                        },
-                    });
-                } catch (err) {
-                    console.log("null");
-                }
-
-
             }
-
+            console.log(data)
 
         });
 
+
+    try {
+        window.bar.destroy();
+    } catch (err) {
+        console.log("null");
+    }
+
+
+
+    document.getElementById("charts").style.display = "none";
+    document.getElementById("districtCharts").style.display = "block";
+    var ctx = document.getElementById("districtCharts").getContext("2d");
+
+
+    setTimeout(function () {
+        document.getElementById("charts").width += 0;
+        window.bar = new Chart(ctx, {
+            // The type of chart we want to create
+            type: "line",
+
+            // The data for our dataset
+            data: {
+                labels: allDistrictYears,
+                datasets: [
+                    {
+                        label: "Low-Income Student Count",
+                        borderColor: "rgb(50, 215, 75)",
+                        data: allDistrictPopulation,
+                        fill: false,
+                        lineTension: 0,
+                    }
+                ],
+            },
+
+            // Configuration options go here
+            options: {
+                scales: {
+                    xAxes: [
+                        {
+                            gridLines: {
+                                display: false,
+                                borderColor: "white",
+                            },
+                        },
+                    ],
+                    yAxes: [
+                        {
+                            gridLines: {
+                                color: "#303030",
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: "Poverty Rate",
+                            },
+                        },
+                    ],
+                },
+            },
+        });
+
+    }, 2000);
+
+
+
 }
+
+$("#clear").click(function () {
+    localStorage.clear();
+    location.reload();
+})
