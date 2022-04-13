@@ -1,3 +1,8 @@
+body, html{
+    overflow-x: hidden;
+    overscroll-behavior-y: none;
+}
+
 .hello {
     font-size: 30px;
     color: white;
@@ -92,7 +97,7 @@ hr {
   width: 150px;
   display: inline-block;
 }
-  
+
 .img {
     position: absolute;
     height: 100%;
@@ -102,7 +107,8 @@ hr {
 
 .AllContent {
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .breaks {
@@ -155,14 +161,14 @@ hr {
     left: 25%;
     top: 30%;
 }
-  
+
 .searchOutline {
     font-size: 150px;
     position: relative;
     left: 16%;
     top: 13%;
     color: rgb(173, 173, 173);
-    
+
 }
 
 #searchDistrict {
