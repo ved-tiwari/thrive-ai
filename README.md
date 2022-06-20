@@ -15,4 +15,4 @@ Introducing Thrive AI. An app designed to deliver the most relevant poverty rela
 2. Open inspect element panel by pressing <kbd>F12</kbd> on your keyboard
 3. Press <kbd>CTRL</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> to open device emulation
 4. Click *Dimensions* to open dropdown and select iPhone XR
-5. 
+5. Refresh page
