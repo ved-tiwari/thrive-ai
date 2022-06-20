@@ -22,5 +22,6 @@ Introducing Thrive AI. An app designed to deliver the most relevant poverty rela
 - Ionic.JS
 - NewsData.io API
 - jQuery
-- Scikit-Learn Linear Regression
 - FETCH API and AJAX calls
+- Scikit-Learn Linear Regression
+- NumPy
