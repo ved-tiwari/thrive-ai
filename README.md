@@ -1,4 +1,4 @@
-# Thrive AI
+# Thrive AI 🌱
 
 ## Description
 Introducing Thrive AI. An app designed to deliver the most relevant poverty related info to help aid the global poverty crisis. Thrive AI was built with ease of use in mind, and is the first app to not only provide accurate poverty rate projections for the future, but also take initiative by providing helpful resources to get one step closer to ending poverty once and for all.
