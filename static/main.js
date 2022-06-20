@@ -499,14 +499,13 @@ fetch('https://newsdata.io/api/1/news?apikey=pub_54761cda437166ec7a38dbf4cfc5db8
 var allData = [];
 function iterate(data) {
 
-    //Pick random image
-    var rand = Math.floor(Math.random() * 11);
-    var imgSource = "Pics/poverty " + rand;
-
     var identifier = 0;
     for (let i = 0; i < 9; i++) {
         if (data[i].image_url == null) {
-            $(`#im${i}`).attr("src", imgSource)
+            //Pick random image
+            var allImages = ["https://drive.google.com/uc?id=1QqivbiSY_YgeR7YkJ2puIoEYyeIoDgub", "https://drive.google.com/uc?id=1SLtsTAQrmJEy-RMdQ4VHwyOEYjYAcgif", "https://drive.google.com/uc?id=1QGEx3l4bscxY9i8UBqzVmKUtWjoXIHof", "https://drive.google.com/uc?id=1mzSeZWFboNeSR-8D7WLVuCrmmqe3Kyqj", "https://drive.google.com/uc?id=1CI1j05vE0WhzXUrcTJmY7DSgDtnCShOn", "https://drive.google.com/uc?id=1KzoR5FKvr1d-wWUQlVBBizovWSZATeNW", "https://drive.google.com/uc?id=1xc4l71-uNX045dKuzwZi-DuJxofCoQog", "https://drive.google.com/uc?id=13jP-WQ3mBHE5pcwBZQx36FkZZWw9DOL3", "https://drive.google.com/uc?id=1zKX9WILsJIE0pATefEjcIk_j6kPocI-E", "https://drive.google.com/uc?id=1Y7OMb4vH_b6SDxwyzUIVOluuEii7y287", "https://drive.google.com/uc?id=1Cuh_q7hsS-Ch8PTs22azfn0LmDI5OM97"]
+            var randomImage = allImages[Math.floor(Math.random() * allImages.length)]
+            $(`#im${i}`).attr("src", randomImage)
         } else {
             $(`#im${i}`).attr("src", data[i].image_url)
         }
@@ -599,7 +598,7 @@ async function openModal(opts = {}) {
 
 var charityIndex = 0;
 var titles = ["Defeat Poverty", "The Borgen Project", "World Relief", "Care International"]
-var images = ["https://media.globalcitizen.org/thumbnails/13/00/13004612-2e8d-4787-971c-21bfd2963b7a/bbh-singapore-d2hs0grfcpq-unsplash.jpg__1600x900_q85_crop_subsampling-2.jpg", "https://i.ibb.co/crg6dy4/pexels-pixabay-50707-Cropped.jpg", "https://i.ibb.co/F6J3gYp/ERM-7288-scaled-Cropped.jpg", "https://i.ibb.co/6JkR0hq/pexels-pixabay-45842-Cropped.jpg"]
+var images = ["https://media.globalcitizen.org/thumbnails/13/00/13004612-2e8d-4787-971c-21bfd2963b7a/bbh-singapore-d2hs0grfcpq-unsplash.jpg__1600x900_q85_crop_subsampling-2.jpg", "https://drive.google.com/uc?id=1AVGcwMWq4W1kPgvQalRDriiLYHCXxQA9", "https://drive.google.com/uc?id=1lsuzecc3DKTuqIfBJ2nL_f_PlBk6FQRf", "https://drive.google.com/uc?id=1cY7-tvlWxHBVWHS0UvJTHmlDv4OyNt1q"]
 var descriptions = ["Global Citizen is a movement of engaged citizens who are using their collective voice to end extreme poverty by 2030.", "The Borgen Project believes that leaders of the most powerful nation on earth should be doing more to address global poverty.", "At World Relief our mission is to empower the local church to serve the most vulnerable.", "CARE works around the globe to save lives, defeat poverty and achieve social justice."]
 var links = ["https://www.globalcitizen.org/en/campaign/defeat-poverty/", "https://borgenproject.org/", "https://worldrelief.org/", "https://www.care-international.org/"]
 
