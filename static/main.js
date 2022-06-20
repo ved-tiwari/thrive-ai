@@ -498,11 +498,15 @@ fetch('https://newsdata.io/api/1/news?apikey=pub_54761cda437166ec7a38dbf4cfc5db8
 //news cards
 var allData = [];
 function iterate(data) {
-    console.log(data)
+
+    //Pick random image
+    var rand = Math.floor(Math.random() * 11);
+    var imgSource = "Pics/poverty " + rand;
+
     var identifier = 0;
     for (let i = 0; i < 9; i++) {
         if (data[i].image_url == null) {
-            $(`#im${i}`).attr("src", "https://images.pexels.com/photos/889042/pexels-photo-889042.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")
+            $(`#im${i}`).attr("src", imgSource)
         } else {
             $(`#im${i}`).attr("src", data[i].image_url)
         }
