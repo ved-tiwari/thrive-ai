@@ -16,3 +16,11 @@ Introducing Thrive AI. An app designed to deliver the most relevant poverty rela
 3. Press <kbd>CTRL</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> to open device emulation
 4. Click *Dimensions* to open dropdown and select iPhone XR
 5. Refresh page
+
+## Technologies used
+- Chart.JS
+- Ionic.JS
+- NewsData.io API
+- jQuery
+- Scikit-Learn Linear Regression
+- FETCH API and AJAX calls
