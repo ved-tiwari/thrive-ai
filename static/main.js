@@ -611,9 +611,7 @@ function fadeOutEverything(keep) {
 }
 
 function change() {
-    for(var i = 0; i < 3; i++) {
-        fadeOutEverything(charityElements[i])
-    }
+    fadeOutEverything(charityElements[charityIndex])
 }
 
 //change charity
