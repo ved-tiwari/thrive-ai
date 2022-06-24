@@ -603,9 +603,11 @@ function fadeOutEverything(keep) {
     for(var i; i < 3; i++) {
         if (charityElements[i] != keep) {
             $("#" + charityElements[i]).fadeOut()
+            break;
         }
         if (charityElements[i] == keep) {
             $("#" + charityElements[i]).fadeIn()
+            break;
         }
     }
 }
