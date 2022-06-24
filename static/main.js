@@ -597,32 +597,23 @@ async function openModal(opts = {}) {
 }
 
 var charityIndex = 0;
-var titles = ["Defeat Poverty", "The Borgen Project", "World Relief", "Care International"]
-var images = ["https://media.globalcitizen.org/thumbnails/13/00/13004612-2e8d-4787-971c-21bfd2963b7a/bbh-singapore-d2hs0grfcpq-unsplash.jpg__1600x900_q85_crop_subsampling-2.jpg", "https://drive.google.com/uc?id=1AVGcwMWq4W1kPgvQalRDriiLYHCXxQA9", "https://drive.google.com/uc?id=1lsuzecc3DKTuqIfBJ2nL_f_PlBk6FQRf", "https://drive.google.com/uc?id=1cY7-tvlWxHBVWHS0UvJTHmlDv4OyNt1q"]
-var descriptions = ["Global Citizen is a movement of engaged citizens who are using their collective voice to end extreme poverty by 2030.", "The Borgen Project believes that leaders of the most powerful nation on earth should be doing more to address global poverty.", "At World Relief our mission is to empower the local church to serve the most vulnerable.", "CARE works around the globe to save lives, defeat poverty and achieve social justice."]
-var links = ["https://www.globalcitizen.org/en/campaign/defeat-poverty/", "https://borgenproject.org/", "https://worldrelief.org/", "https://www.care-international.org/"]
+var charityElements = ["DefeatPoverty", "BorgenProject", "WorldRelief", "CareInternational"]
 
+function fadeOutEverything(keep) {
+    for(var i; i < 3; i++) {
+        if (charityElements[i] != keep) {
+            $("#" + charityElements[i]).fadeOut()
+        }
+        if (charityElements[i] == keep) {
+            $("#" + charityElements[i]).fadeIn()
+        }
+    }
+}
 
 function change() {
-    $("#charityImage").fadeOut(300);
-    setTimeout(() => { $("#charityImage").attr("src", `${images[charityIndex]}`), 100});
-    $("#charityImage").fadeIn(300);
-
-    $("#charityTitle").fadeOut(300);
-    setTimeout(() => { $("#charityTitle").text(`${titles[charityIndex]}`), 100});
-    $("#charityTitle").fadeIn(300);
-
-    $("#donate1").attr("href", `${links[charityIndex]}`, 100)
-
-    $("#charityDescription").fadeOut(300);
-    setTimeout(() => { $("#charityDescription").text(`${descriptions[charityIndex]}`) }, 100);
-    $("#charityDescription").fadeIn(300);
-
-    $("#contribute").fadeOut(300);
-    setTimeout(() => { $("#contribute").text(`Contribute`) }, 100);
-    $("#contribute").fadeIn(300);
-
-    $("#prev").css("color", "#32d74b");
+    for(var i = 0; i < 3; i++) {
+        fadeOutEverything(charityElements[i])
+    }
 }
 
 //change charity
