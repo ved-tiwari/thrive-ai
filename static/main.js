@@ -605,21 +605,21 @@ var links = ["https://www.globalcitizen.org/en/campaign/defeat-poverty/", "https
 
 function change() {
     $("#charityImage").fadeOut(300);
-    setTimeout(() => { $("#charityImage").attr("src", `${images[charityIndex]}`) });
+    setTimeout(() => { $("#charityImage").attr("src", `${images[charityIndex]}`), 100});
     $("#charityImage").fadeIn(300);
 
     $("#charityTitle").fadeOut(300);
-    setTimeout(() => { $("#charityTitle").text(`${titles[charityIndex]}`) });
+    setTimeout(() => { $("#charityTitle").text(`${titles[charityIndex]}`), 100});
     $("#charityTitle").fadeIn(300);
 
-    $("#donate1").attr("href", `${links[charityIndex]}`)
+    $("#donate1").attr("href", `${links[charityIndex]}`, 100)
 
     $("#charityDescription").fadeOut(300);
-    setTimeout(() => { $("#charityDescription").text(`${descriptions[charityIndex]}`) });
+    setTimeout(() => { $("#charityDescription").text(`${descriptions[charityIndex]}`) }, 100);
     $("#charityDescription").fadeIn(300);
 
     $("#contribute").fadeOut(300);
-    setTimeout(() => { $("#contribute").text(`Contribute`) });
+    setTimeout(() => { $("#contribute").text(`Contribute`) }, 100);
     $("#contribute").fadeIn(300);
 
     $("#prev").css("color", "#32d74b");
