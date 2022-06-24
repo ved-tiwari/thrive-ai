@@ -614,53 +614,6 @@ function showDivs(n) {
   x[slideIndex-1].style.display = "block";
 }
 
-/*
-var charityIndex = 0;
-var charityElements = ["DefeatPoverty", "BorgenProject", "WorldRelief", "CareInternational"]
-
-function fadeOutEverything(keep) {
-    for(var i; i < 3; i++) {
-        if (charityElements[i] != keep) {
-            console.log("Remove: " + charityElements[i])
-            $("#" + charityElements[i]).fadeOut()
-            break;
-        }
-        if (charityElements[i] == keep) {
-            $("#" + charityElements[i]).fadeIn()
-            break;
-        }
-    }
-}
-
-function change() {
-    console.log('hi')
-    fadeOutEverything(charityElements[charityIndex])
-}
-
-//change charity
-$("#next").click(function () {
-    if (charityIndex != 3) {
-        change();
-        charityIndex += 1;
-    }
-
-    if (charityIndex == 3) {
-        $("#next").css("color", "gray")
-    }
-})
-
-$("#prev").click(function () {
-    if (charityIndex != 0) {
-        change();
-        charityIndex -= 1;
-    }
-
-    if (charityIndex == 0) {
-        $("#prev").css("color", "gray")
-        $("#next").css("color", "#32d74b")
-    }
-})
-*/
 
 
 
