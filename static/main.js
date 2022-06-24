@@ -1,3 +1,5 @@
+alert("hi")
+
 // Use matchMedia to check the user preference
 const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 console.log(prefersDark)
