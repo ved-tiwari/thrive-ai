@@ -602,6 +602,7 @@ var charityElements = ["DefeatPoverty", "BorgenProject", "WorldRelief", "CareInt
 function fadeOutEverything(keep) {
     for(var i; i < 3; i++) {
         if (charityElements[i] != keep) {
+            console.log("Remove: " + charityElements[i])
             $("#" + charityElements[i]).fadeOut()
             break;
         }
