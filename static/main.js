@@ -600,25 +600,25 @@ var charityIndex = 0;
 $("#next").click(function() {
     charityIndex ++
     if(charityIndex == 1) {
-        $("#DefeatPoverty").fadeIn();
+        $("#DefeatPoverty").fadeIn().css("visibility: block;");
 
         $("#DefeatPoverty").fadeOut();
         $("#WorldRelief").fadeOut();
         $("#CareInternational").fadeOut();
     } else if(charityIndex == 2) {
-        $("#BorgenProject").fadeIn();
+        $("#BorgenProject").fadeIn().css("visibility: block;");;
 
         $("#DefeatPoverty").fadeOut();
         $("#BorgenProject").fadeOut();
         $("#CareInternational").fadeOut();
     } else if(charityIndex == 2) {
-        $("#WorldRelief").fadeIn();
+        $("#WorldRelief").fadeIn().css("visibility: block;");;
 
         $("#DefeatPoverty").fadeOut();
         $("#BorgenProject").fadeOut();
         $("#WorldRelief").fadeOut();
     } else if(charityIndex == 2) {
-        $("#CareInternational").fadeIn();
+        $("#CareInternational").fadeIn().css("visibility: block;");;
 
         $("#DefeatPoverty").fadeOut();
         $("#BorgenProject").fadeOut();
