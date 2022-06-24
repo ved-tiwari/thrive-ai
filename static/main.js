@@ -597,6 +597,37 @@ async function openModal(opts = {}) {
 }
 
 var charityIndex = 0;
+$("#next").click(function() {
+    charityIndex ++
+    if(charityIndex == 1) {
+        $("#DefeatPoverty").fadeIn();
+
+        $("#DefeatPoverty").fadeOut();
+        $("#WorldRelief").fadeOut();
+        $("#CareInternational").fadeOut();
+    } else if(charityIndex == 2) {
+        $("#BorgenProject").fadeIn();
+
+        $("#DefeatPoverty").fadeOut();
+        $("#BorgenProject").fadeOut();
+        $("#CareInternational").fadeOut();
+    } else if(charityIndex == 2) {
+        $("#WorldRelief").fadeIn();
+
+        $("#DefeatPoverty").fadeOut();
+        $("#BorgenProject").fadeOut();
+        $("#WorldRelief").fadeOut();
+    } else if(charityIndex == 2) {
+        $("#CareInternational").fadeIn();
+
+        $("#DefeatPoverty").fadeOut();
+        $("#BorgenProject").fadeOut();
+        $("#WorldRelief").fadeOut();
+    }
+})
+
+/*
+var charityIndex = 0;
 var charityElements = ["DefeatPoverty", "BorgenProject", "WorldRelief", "CareInternational"]
 
 function fadeOutEverything(keep) {
@@ -641,6 +672,8 @@ $("#prev").click(function () {
         $("#next").css("color", "#32d74b")
     }
 })
+*/
+
 
 
 //recent searches
