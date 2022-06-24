@@ -1,5 +1,3 @@
-alert("Test")
-
 // Use matchMedia to check the user preference
 const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 console.log(prefersDark)
@@ -606,26 +604,27 @@ var links = ["https://www.globalcitizen.org/en/campaign/defeat-poverty/", "https
 
 
 function change() {
-    $("#charityImage").fadeOut(300);
-    setTimeout(() => { $("#charityImage").attr("src", `${images[charityIndex]}`) }, 250);
-    $("#charityImage").fadeIn(300);
+    $("#charityImage").fadeOut(350);
+    setTimeout(() => { $("#charityImage").attr("src", `${images[charityIndex]}`) }, 300);
+    $("#charityImage").fadeIn(350);
 
-    $("#charityTitle").fadeOut(300);
-    setTimeout(() => { $("#charityTitle").text(`${titles[charityIndex]}`) }, 250);
-    $("#charityTitle").fadeIn(300);
+    $("#charityTitle").fadeOut(350);
+    setTimeout(() => { $("#charityTitle").text(`${titles[charityIndex]}`) }, 300);
+    $("#charityTitle").fadeIn(350);
 
     $("#donate1").attr("href", `${links[charityIndex]}`)
 
-    $("#charityDescription").fadeOut(300);
-    setTimeout(() => { $("#charityDescription").text(`${descriptions[charityIndex]}`) }, 250);
-    $("#charityDescription").fadeIn(300);
+    $("#charityDescription").fadeOut(350);
+    setTimeout(() => { $("#charityDescription").text(`${descriptions[charityIndex]}`) }, 300);
+    $("#charityDescription").fadeIn(350);
 
-    $("#contribute").fadeOut(300);
-    setTimeout(() => { $("#contribute").text(`Contribute`) }, 250);
-    $("#contribute").fadeIn(300);
+    $("#contribute").fadeOut(350);
+    setTimeout(() => { $("#contribute").text(`Contribute`) }, 300);
+    $("#contribute").fadeIn(350);
 
     $("#prev").css("color", "#32d74b");
 }
+
 //change charity
 $("#next").click(function () {
     if (charityIndex != 3) {
