@@ -596,35 +596,23 @@ async function openModal(opts = {}) {
     currentModal = modal;
 }
 
-var charityIndex = 0;
-$("#next").click(function() {
-    charityIndex ++
-    if(charityIndex == 1) {
-        $("#DefeatPoverty").fadeIn();
+var slideIndex = 1;
+showDivs(slideIndex);
 
-        $("#DefeatPoverty").fadeOut();
-        $("#WorldRelief").fadeOut();
-        $("#CareInternational").fadeOut();
-    } else if(charityIndex == 2) {
-        $("#BorgenProject").fadeIn();
+function plusDivs(n) {
+  showDivs(slideIndex += n);
+}
 
-        $("#DefeatPoverty").fadeOut();
-        $("#BorgenProject").fadeOut();
-        $("#CareInternational").fadeOut();
-    } else if(charityIndex == 2) {
-        $("#WorldRelief").fadeIn();
-
-        $("#DefeatPoverty").fadeOut();
-        $("#BorgenProject").fadeOut();
-        $("#WorldRelief").fadeOut();
-    } else if(charityIndex == 2) {
-        $("#CareInternational").fadeIn();
-
-        $("#DefeatPoverty").fadeOut();
-        $("#BorgenProject").fadeOut();
-        $("#WorldRelief").fadeOut();
-    }
-})
+function showDivs(n) {
+  var i;
+  var x = document.getElementsByClassName("mySlides");
+  if (n > x.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = x.length} ;
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  x[slideIndex-1].style.display = "block";
+}
 
 /*
 var charityIndex = 0;
