@@ -611,6 +611,7 @@ function fadeOutEverything(keep) {
 }
 
 function change() {
+    console.log('hi')
     fadeOutEverything(charityElements[charityIndex])
 }
 
